@@ -10,4 +10,5 @@ namespace PocketCinemaAPIService
 
         public string? Summary { get; set; }
     }
+   
 }

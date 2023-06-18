@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace PocketCinemaAPIService.Controllers
 {
@@ -10,24 +11,34 @@ namespace PocketCinemaAPIService.Controllers
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
+        private readonly DBContextClass _dbContext;
+        private IUserService _userService;
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+       /* public WeatherForecastController(DBContextClass dbContext)
         {
-            _logger = logger;
-        }
+            _dbContext = dbContext;
+        }*/
+        public WeatherForecastController(IUserService userService)
+    {
+        _userService = userService;
+    }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+    [HttpGet(Name = "GetWeatherForecast")]
+        /* public IEnumerable<WeatherForecast> Get()*/
+        public AuthenticateResponse Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            AuthenticateRequest model = new AuthenticateRequest{ Username = "test", Password = "test" };
+
+            var response = _userService.Authenticate(model);
+            return response;
+
+          /*  return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
-            .ToArray();
+            .ToArray();*/
         }
     }
 }
